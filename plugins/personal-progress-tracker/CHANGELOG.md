@@ -7,6 +7,11 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [1.3.0]
+### Changed
+- Slack channel lookup now includes instructions for grabbing the ID manually via right-click → Copy → Copy link in the Slack sidebar
+- Updated meeting digest scheduled task reference from `cowork-meeting-digest` to `cowork-gemini-notes`
+
 ## [1.2.0]
 ### Changed
 - Global instruction setup now writes directly to `~/.claude/CLAUDE.md` instead of prompting the user to paste it manually

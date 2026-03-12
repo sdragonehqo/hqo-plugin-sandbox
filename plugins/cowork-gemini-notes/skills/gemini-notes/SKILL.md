@@ -1,16 +1,16 @@
 ---
-name: meeting-digest
+name: gemini-notes
 description: >
   This skill should be used when the user asks to "digest my meetings",
   "review my transcripts", "meeting notes", "process gemini notes",
   "what meetings did I have", "summarize my meetings", or any request
-  involving pulling Gemini Notes emails and extracting structured
+  involving pulling Google Gemini Notes emails and extracting structured
   meeting summaries from linked Google Drive transcripts.
 ---
 
-# Meeting Digest → Cowork Memory
+# Gemini Notes Digest → Cowork Memory
 
-Process Gemini Notes emails from the past 24 hours, retrieve linked Google Drive transcripts, and write structured entries to the cowork memory system. This skill is fully automated — do NOT ask the user for any input.
+Process Google Gemini Notes emails from the past 24 hours, retrieve linked Google Drive transcripts, and write structured entries to the cowork memory system. This skill is fully automated — do NOT ask the user for any input.
 
 ## Step 0: Ensure Storage Exists (ALWAYS run first)
 
@@ -18,28 +18,42 @@ Process Gemini Notes emails from the past 24 hours, retrieve linked Google Drive
 mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && echo "RESOLVED_MEMORY_PATH=$(cd ~/.cowork/memory && pwd)"
 ```
 
-Use the value of `RESOLVED_MEMORY_PATH` printed by this command as the absolute path for all subsequent Grep, Read, and Write tool calls instead of `~/.cowork/memory/`. For example, if the output is `RESOLVED_MEMORY_PATH=/Users/sal.dragone/.cowork/memory`, use `/Users/sal.dragone/.cowork/memory/` everywhere below.
+Use the value of `RESOLVED_MEMORY_PATH` printed by this command as the absolute path for all subsequent Grep, Read, and Write tool calls instead of `~/.cowork/memory/`.
 
 ## Step 1: Search Gmail for Gemini Notes
 
 Use `gmail_search_messages` with query `from:gemini-notes@google.com newer_than:1d` to find all Gemini Notes emails from the past 24 hours.
 
-If no emails found, output `No new meeting notes in the past 24 hours.` and stop.
+If no emails found, output `No new Gemini Notes in the past 24 hours.` and stop.
 
 ## Step 2: Read Each Email
 
-For each email, use `gmail_read_message` to get the full body. Extract all Google Drive links:
-- `https://docs.google.com/document/d/DOCUMENT_ID/...`
+For each email, use `gmail_read_message` to get the full body. Record the email subject, sender, and `internalDate` timestamp.
 
-Record the email subject, sender, and timestamp alongside each link.
+Note: the Gmail MCP only returns the plain-text MIME part. Gemini Notes embed the Google Doc link as an HTML hyperlink ("Open meeting notes") which is stripped from plain text — Step 3 handles this with a Drive search fallback.
 
-## Step 3: Fetch Transcript Content
+## Step 3: Get the Transcript Document
 
-For each Google Drive document link:
-1. Extract the document ID (segment after `/d/` and before the next `/`)
-2. Use `google_drive_fetch` with the document ID to get the full transcript
+Follow this sequence for each email:
 
-If a document can't be fetched, note `[Transcript unavailable]` and continue.
+**3a. Try extracting a link from the email body:**
+Look for `https://docs.google.com/document/d/DOCUMENT_ID/...` in the email body. If found, skip to 3c.
+
+**3b. Fallback — Search Google Drive:**
+If no link is found (expected in most cases due to the plain-text limitation):
+
+1. Extract the meeting title from the email subject. Subject format is typically:
+   `Notes: "Meeting Title" Mon DD, YYYY` → extract the quoted portion as the search term
+2. Call `google_drive_search` with:
+   - query: `name contains '<meeting title>' and mimeType = 'application/vnd.google-apps.document'`
+   - order_by: `modifiedTime desc`
+3. From the results, pick the document whose `created_time` is closest to the email's `internalDate`
+4. Extract the document ID from the returned `uri` field (strip the `drive:///` prefix)
+
+If Drive search returns no results, note `[Transcript unavailable]` and continue to the next email.
+
+**3c. Fetch the transcript:**
+Call `google_drive_fetch` with the document ID to retrieve the full transcript text.
 
 ## Step 4: Analyze Each Transcript
 
@@ -74,7 +88,7 @@ For each meeting:
 
 ## Step 6: Write to Memory
 
-For each meeting, append to `~/.cowork/memory/s/DATE.md`:
+For each meeting, append to `RESOLVED_MEMORY_PATH/s/DATE.md`:
 ```
 ## TIME|USER|meeting|TAGS
 SUMMARY
@@ -85,7 +99,7 @@ SUMMARY
 - Open: need to decide on vendor for event platform
 ```
 
-For each meeting, append ONE line to `~/.cowork/memory/INDEX`:
+For each meeting, append ONE line to `RESOLVED_MEMORY_PATH/INDEX`:
 ```
 DATE|TIME|USER|meeting|TAGS|SUMMARY
 ```
@@ -94,7 +108,7 @@ DATE|TIME|USER|meeting|TAGS|SUMMARY
 
 Output:
 ```
-Meeting digest saved.
+Gemini Notes digest saved.
 X meeting(s) processed
 tags: tag1, tag2, tag3
 ```
@@ -106,6 +120,6 @@ Then list each meeting title with its action item count.
 - NEVER prompt the user for input
 - Write ONE entry per meeting (not grouped)
 - Prefix decisions with `+ Decision:` and actions with `- Action:` and open questions with `- Open:`
-- Always fetch the full transcript — don't summarize from email preview alone
-- If an email has no Drive links, note it and continue
+- Always attempt to fetch the full transcript via Drive search — do not summarize from email preview alone
+- Use `name contains` (not `fullText contains`) in Drive search — it supports `modifiedTime desc` ordering
 - Do not read or modify existing INDEX/session entries — append only

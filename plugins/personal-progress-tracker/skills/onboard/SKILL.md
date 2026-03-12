@@ -91,7 +91,9 @@ DMs are always included. Use `slack_search_channels` to look up channel IDs as t
 **Channel lookup strategy — for each channel the user names:**
 1. Search public channels first with `slack_search_channels`
 2. If not found, search again with `types: "private_channel"` to check private channels
-3. If still not found, tell the user the channel wasn't found and ask them to confirm the name or paste the channel ID directly
+3. If still not found, ask the user to grab the ID manually:
+
+> "I couldn't find that channel. To get the ID: right-click the channel name in the left sidebar of Slack → hover over **Copy** → click **Copy link**. The link will look like `https://app.slack.com/client/TXXXXXXXX/CXXXXXXXX` — the channel ID is the part starting with **C** at the end of the URL. Paste that here and I'll add it."
 
 Build a list. If the user says "just DMs for now", proceed with an empty channels list.
 
@@ -163,12 +165,12 @@ create_scheduled_task(
 )
 ```
 
-**Meeting digest:**
+**Gemini Notes digest:**
 ```
 create_scheduled_task(
-  taskId: "cowork-meeting-digest",
-  description: "Daily meeting notes digest to cowork memory",
-  prompt: "Run /cowork-meeting-digest:meeting-digest",
+  taskId: "cowork-gemini-notes",
+  description: "Daily Gemini Notes digest to cowork memory",
+  prompt: "Run /cowork-gemini-notes:gemini-notes",
   cronExpression: "0 9 * * 1-5"
 )
 ```

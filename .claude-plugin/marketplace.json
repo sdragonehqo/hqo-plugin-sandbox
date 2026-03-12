@@ -43,12 +43,12 @@
       }
     },
     {
-      "name": "cowork-meeting-digest",
-      "source": "./plugins/cowork-meeting-digest",
-      "version": "1.0.0",
-      "description": "Digests the last 24 hours of Gemini meeting notes into the cowork memory system. Requires cowork-memory.",
+      "name": "cowork-gemini-notes",
+      "source": "./plugins/cowork-gemini-notes",
+      "version": "2.0.0",
+      "description": "Digests the last 24 hours of Google Gemini meeting notes into the cowork memory system. Requires cowork-memory.",
       "category": "productivity",
-      "tags": ["meetings", "gemini", "transcripts", "google-drive", "memory"],
+      "tags": ["gemini", "gemini-notes", "meetings", "transcripts", "google-drive", "memory"],
       "author": {
         "name": "Sal Dragone"
       }
@@ -56,7 +56,7 @@
     {
       "name": "personal-progress-tracker",
       "source": "./plugins/personal-progress-tracker",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "description": "Onboarding and recall for the cowork memory system. Verifies connectors, sets up global instructions, configures Slack channels, schedules digests, and provides open-ended memory search.",
       "category": "productivity",
       "tags": ["onboard", "recall", "memory", "setup", "schedule", "progress"],
