@@ -1,13 +1,19 @@
-# Changelog — cowork-slack-digest
+# cowork-slack-digest Changelog
 
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+## [2.0.0] — 2026-03-12
 
----
+### Breaking
+- Moved storage target from `~/.cowork/memory/` to `~/Documents/ppt-index/`. Storage must be initialized via `personal-progress-tracker:onboard` before first use.
+- Channel config now read from `~/Documents/ppt-index/config.md` (previously `~/.cowork/memory/config.md`).
 
-## [Unreleased]
+## [1.1.0] — 2025-12-01
 
-## [1.0.0]
 ### Added
-- Initial standalone release, extracted from cowork-memory
-- Fixed path resolution for Grep/Read tool calls
+- Scheduled task prompt now dynamically includes configured channel IDs and DM preference from onboarding.
+- Instructions for finding private channel IDs via Slack copy-link method.
+
+## [1.0.0] — 2025-11-01
+
+### Added
+- Initial standalone release, split from cowork-memory.
+- DM and configured channel digest with thread expansion.

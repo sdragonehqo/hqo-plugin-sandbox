@@ -11,25 +11,9 @@ description: >
 
 Review emails from the past 24 hours, categorize by importance, and write structured entries to the cowork memory system. This skill is fully automated — do NOT ask the user for any input.
 
-## Step 0: Mount and Resolve Memory Path
+## Step 0: Verify Storage
 
-Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise data is written to the VM's ephemeral storage and lost when the session ends.
-
-**First, use the Read tool to trigger the mount:**
-
-```
-Read ~/.cowork/memory/INDEX
-```
-
-This causes Cowork to mount your local `~/.cowork/memory` into the session. If the file doesn't exist yet, continue anyway.
-
-**Then create the directory structure and resolve the absolute path:**
-
-```bash
-mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && COWORK_MEM_DIR=$(eval echo ~/.cowork/memory) && echo "$COWORK_MEM_DIR"
-```
-
-Use the printed absolute path in all subsequent Grep, Read, and Write tool calls. Never use `~` in tool call paths.
+Memory lives at `~/Documents/ppt-index/`. Use this path directly in all Read, Write, and Grep tool calls. If storage doesn't exist yet, run `/personal-progress-tracker:onboard` first.
 
 ## Step 1: Search Gmail
 
@@ -81,7 +65,7 @@ Example:
 
 **Group all emails into ONE entry per digest run** (not one entry per email).
 
-Append to `RESOLVED_PATH/s/DATE.md` (using the resolved path from Step 0):
+Append to `~/Documents/ppt-index/s/DATE.md` (using the resolved path from Step 0):
 ```
 ## TIME|USER|email|TAGS
 SUMMARY
@@ -90,7 +74,7 @@ SUMMARY
 + informational item
 ```
 
-Append ONE line to `RESOLVED_PATH/INDEX` (using the resolved path from Step 0):
+Append ONE line to `~/Documents/ppt-index/INDEX` (using the resolved path from Step 0):
 ```
 DATE|TIME|USER|email|TAGS|SUMMARY
 ```

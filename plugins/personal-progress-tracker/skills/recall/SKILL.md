@@ -17,25 +17,15 @@ See `./references/memory-schema.md` for the complete schema.
 
 ---
 
-## Step 0: Mount and Resolve Memory Path
+## Step 0: Verify Storage
 
-Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise the data written by previous sessions won't be visible.
-
-**First, use the Read tool to trigger the mount:**
+Read `~/Documents/ppt-index/INDEX` to confirm the memory system is initialized:
 
 ```
-Read ~/.cowork/memory/INDEX
+Read ~/Documents/ppt-index/INDEX
 ```
 
-This causes Cowork to mount your local `~/.cowork/memory` into the session. If this returns an error or empty result, the memory system hasn't been set up yet — tell the user to run `/personal-progress-tracker:onboard`.
-
-**Then resolve the absolute path:**
-
-```bash
-MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR"
-```
-
-Use the printed absolute path in all subsequent Grep and Read tool calls. Never use `~` in tool call paths.
+If the file is not found, tell the user: "Memory storage not found. Run `/personal-progress-tracker:onboard` to set up."
 
 ---
 
@@ -77,7 +67,7 @@ Combine filters: "emails about HubSpot this week" → date range + `\|email\|` +
 Always start here. Never Read the INDEX directly — it may be very large.
 
 ```
-Grep pattern="PATTERN" path="RESOLVED_PATH/INDEX" output_mode="content"
+Grep pattern="PATTERN" path="~/Documents/ppt-index/INDEX" output_mode="content"
 ```
 
 If no results on first try:
@@ -93,7 +83,7 @@ If no results on first try:
 For full task-level detail, read the specific daily file(s) whose dates appeared in the INDEX matches:
 
 ```
-Read RESOLVED_PATH/s/YYYYMMDD.md
+Read ~/Documents/ppt-index/s/YYYYMMDD.md
 ```
 
 Only read files with matching dates from Step 2. Don't read files speculatively.
@@ -105,7 +95,7 @@ Only read files with matching dates from Step 2. Don't read files speculatively.
 For queries about open/unfinished work ("what's still open", "any pending actions", "what do I still need to do"):
 
 ```
-Grep pattern="^- " path="RESOLVED_PATH/s/" output_mode="content"
+Grep pattern="^- " path="~/Documents/ppt-index/s/" output_mode="content"
 ```
 
 This returns every open item across all days with its file path (containing the date). Filter further by keyword if the query is scoped (e.g., "open items about Joel").
@@ -130,7 +120,7 @@ Lead with a direct answer or summary. Offer to drill deeper if the user wants mo
 ## Rules
 
 - Always Grep the INDEX first — never Read it
-- Use RESOLVED_PATH in all tool calls — never `~` directly
+- Use `~/Documents/ppt-index/` in all tool calls
 - Only read daily files whose dates appeared in INDEX results
 - If nothing found, suggest alternative search terms or confirm the date range
 - Cite source on every result

@@ -1,13 +1,13 @@
-# Changelog — cowork-email-digest
+# cowork-email-digest Changelog
 
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+## [2.0.0] — 2026-03-12
 
----
+### Breaking
+- Moved storage target from `~/.cowork/memory/` to `~/Documents/ppt-index/`. Storage must be initialized via `personal-progress-tracker:onboard` before first use.
 
-## [Unreleased]
+## [1.1.0] — 2025-12-01
 
-## [1.0.0]
 ### Added
-- Initial standalone release, extracted from cowork-memory
-- Fixed path resolution for Grep/Read tool calls
+- Initial standalone release, split from cowork-memory.
+- Groups all emails into one memory entry per digest run.
+- Background noise filtering (noreply, newsletters, billing).

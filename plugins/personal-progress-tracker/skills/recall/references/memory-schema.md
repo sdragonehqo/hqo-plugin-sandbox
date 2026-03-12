@@ -8,7 +8,7 @@ Used by the recall skill to interpret and query stored data.
 ## Storage Layout
 
 ```
-~/.cowork/memory/
+~/Documents/ppt-index/
 ├── INDEX              — one line per entry, all sources, Grep-optimized
 ├── config.md          — Slack channel configuration (written by onboard)
 └── s/
@@ -81,7 +81,7 @@ Multiple entry blocks per file, separated by a blank line. Each block maps to on
 
 ## Config File
 
-`~/.cowork/memory/config.md` — written by onboard skill, read by slack-digest.
+`~/Documents/ppt-index/config.md` — written by onboard skill, read by slack-digest.
 
 ```markdown
 # Cowork Memory — Configuration

@@ -1,20 +1,20 @@
-# Changelog — cowork-gemini-notes
+# cowork-gemini-notes Changelog
 
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+## [3.0.0] — 2026-03-12
 
----
+### Breaking
+- Moved storage target from `~/.cowork/memory/` to `~/Documents/ppt-index/`. Storage must be initialized via `personal-progress-tracker:onboard` before first use.
 
-## [Unreleased]
-
-## [2.0.0]
 ### Changed
-- Renamed plugin from `cowork-meeting-digest` to `cowork-gemini-notes` — platform-specific naming to allow other note-taking integrations in the future
-- Renamed skill from `meeting-digest` to `gemini-notes`
-- Fixed Step 3: Gmail MCP returns plain text only, stripping the Google Doc hyperlink. Now falls back to `google_drive_search` using `name contains '<meeting title>'` with `modifiedTime desc` ordering to find the transcript. Avoids `fullText contains` which requires `relevance` ordering.
-- Step 6 now uses `RESOLVED_MEMORY_PATH` consistently
+- Renamed from `cowork-meeting-digest` / `meeting-digest` skill to `cowork-gemini-notes` / `gemini-notes` for platform-specific clarity.
 
-## [1.0.0]
+### Fixed
+- Gmail MCP only returns `text/plain` MIME part, stripping the Google Drive link embedded as an HTML hyperlink. Step 3 now tries link extraction first, then falls back to `google_drive_search` with `name contains '<meeting title>'` + `modifiedTime desc` ordering.
+- Replaced `fullText contains` Drive query with `name contains` to allow `modifiedTime desc` ordering (previously caused a Drive API validation error).
+
+## [2.1.0] — 2025-12-01
+
 ### Added
-- Initial standalone release, extracted from cowork-memory
-- Fixed path resolution for Grep/Read tool calls
+- Initial standalone release as `cowork-meeting-digest`.
+- ONE entry per meeting (not grouped like email/slack).
+- `+ Decision:`, `- Action:`, `- Open:` item prefix conventions.

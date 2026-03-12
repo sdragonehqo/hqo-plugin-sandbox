@@ -1,27 +1,11 @@
-# Changelog — cowork-memory
+# cowork-memory Changelog
 
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+## [4.0.0] — 2026-03-12
 
----
+### Breaking
+- Moved storage from `~/.cowork/memory/` to `~/Documents/ppt-index/` to avoid per-session permission prompts in Cowork VM environments. Existing data will not be migrated automatically.
 
-## [Unreleased]
+## [3.1.0] — 2025-12-01
 
-## [3.1.0]
-### Fixed
-- save-session now triggers Cowork directory mount via Read tool before any writes, preventing data loss to VM ephemeral storage
-
-## [3.0.0]
 ### Changed
-- Plugin now contains only the `save-session` skill
-- Digests extracted into standalone plugins: cowork-email-digest, cowork-slack-digest, cowork-meeting-digest
-- Recall and onboard moving to future personal-progress-tracker plugin
-- Triggered automatically via Cowork global instruction, not manually
-
-### Removed
-- email-digest, slack-digest, meeting-digest, recall, onboard, task-master skills
-- All legacy commands/ directory
-
-## [2.0.0]
-### Added
-- Initial release in HqO Plugin Marketplace
+- Trimmed plugin to `save-session` skill only; digest skills moved to standalone plugins.

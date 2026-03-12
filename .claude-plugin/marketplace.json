@@ -12,7 +12,7 @@
     {
       "name": "cowork-memory",
       "source": "./plugins/cowork-memory",
-      "version": "3.1.0",
+      "version": "4.0.0",
       "description": "Automatically saves completed Cowork sessions to local memory. Triggered by global instruction after every completed task list.",
       "category": "productivity",
       "tags": ["memory", "recall", "digest", "sessions", "email", "slack", "meetings"],
@@ -23,7 +23,7 @@
     {
       "name": "cowork-email-digest",
       "source": "./plugins/cowork-email-digest",
-      "version": "1.1.0",
+      "version": "2.0.0",
       "description": "Digests the last 24 hours of Gmail into the cowork memory system. Requires cowork-memory.",
       "category": "productivity",
       "tags": ["email", "gmail", "digest", "inbox", "memory"],
@@ -34,7 +34,7 @@
     {
       "name": "cowork-slack-digest",
       "source": "./plugins/cowork-slack-digest",
-      "version": "1.1.0",
+      "version": "2.0.0",
       "description": "Digests the last 24 hours of Slack DMs and channels into the cowork memory system. Requires cowork-memory.",
       "category": "productivity",
       "tags": ["slack", "digest", "dms", "channels", "memory"],
@@ -45,7 +45,7 @@
     {
       "name": "cowork-gemini-notes",
       "source": "./plugins/cowork-gemini-notes",
-      "version": "2.1.0",
+      "version": "3.0.0",
       "description": "Digests the last 24 hours of Google Gemini meeting notes into the cowork memory system. Requires cowork-memory.",
       "category": "productivity",
       "tags": ["gemini", "gemini-notes", "meetings", "transcripts", "google-drive", "memory"],
@@ -56,7 +56,7 @@
     {
       "name": "personal-progress-tracker",
       "source": "./plugins/personal-progress-tracker",
-      "version": "1.4.0",
+      "version": "2.0.0",
       "description": "Onboarding and recall for the cowork memory system. Verifies connectors, sets up global instructions, configures Slack channels, schedules digests, and provides open-ended memory search.",
       "category": "productivity",
       "tags": ["onboard", "recall", "memory", "setup", "schedule", "progress"],

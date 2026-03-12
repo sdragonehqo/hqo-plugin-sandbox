@@ -11,15 +11,15 @@ description: >
 
 Guide the user through complete setup of the cowork memory system. This skill IS conversational — ask questions and wait for answers at each step.
 
-## Step 0: Resolve Memory Path
+## Step 0: Create Memory Storage
 
-Run this first, every time:
+Initialize the memory storage directory using the Write tool (this creates the parent directory automatically):
 
-```bash
-MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR" && mkdir -p "$MEMORY_DIR/s" && touch "$MEMORY_DIR/INDEX"
+```
+Write ~/Documents/ppt-index/INDEX   ← create as an empty file
 ```
 
-Capture the printed path. Use this resolved absolute path (not `~`) in all subsequent Read, Write, and Grep tool calls.
+Confirm to the user: "Memory storage created at ~/Documents/ppt-index/ ✓"
 
 ---
 
@@ -49,27 +49,21 @@ For any that fail, tell the user exactly where to connect them: **Cowork Setting
 
 Write the automatic session save rule directly to CLAUDE.md — do not ask the user to do it manually.
 
-**2a. Resolve the CLAUDE.md path:**
-
-```bash
-CLAUDE_MD=$(eval echo ~/.claude/CLAUDE.md) && echo "$CLAUDE_MD"
-```
-
-**2b. Read the current contents** (if the file exists) to check whether the rule is already present:
+**2a. Read the current contents** (if the file exists) to check whether the rule is already present:
 
 ```
-Read RESOLVED_CLAUDE_MD_PATH
+Read ~/.claude/CLAUDE.md
 ```
 
 If the file doesn't exist yet, that's fine — you'll create it.
 
-**2c. Check for existing rule:**
+**2b. Check for existing rule:**
 
 If the file already contains `cowork-memory:save-session`, tell the user "Auto-save rule already in place ✓" and move on.
 
-**2d. Add the rule:**
+**2c. Add the rule:**
 
-If the rule is not present, append the following block to CLAUDE.md using the Edit tool (or Write if the file is new):
+If the rule is not present, append the following block to ~/.claude/CLAUDE.md using the Edit tool (or Write if the file is new):
 
 ```
 ## Automatic Session Save
@@ -97,7 +91,7 @@ DMs are always included. Use `slack_search_channels` to look up channel IDs as t
 
 Build a list. If the user says "just DMs for now", proceed with an empty channels list.
 
-Write to `RESOLVED_PATH/config.md`:
+Write to `~/Documents/ppt-index/config.md`:
 
 ```markdown
 # Cowork Memory — Configuration
@@ -189,7 +183,7 @@ Setup Complete!
 Connectors:     Gmail ✓   Slack ✓   Google Drive ✓
 Global instruction: confirmed
 Slack monitoring: DMs + #channel1, #channel2
-Memory path: /Users/yourname/.cowork/memory/
+Memory path: ~/Documents/ppt-index/
 
 Scheduled tasks:
   cowork-email-digest    — weekdays 8:00am
@@ -205,7 +199,7 @@ You're all set. Try:
 ## Rules
 
 - This skill is conversational — ask questions and wait for answers
-- Always resolve the memory path in Step 0 before any file operations
+- Memory storage is at ~/Documents/ppt-index/ — created in Step 0, used directly in all tool calls
 - Don't skip steps even if a connector is missing — note and continue
 - Always confirm schedule times before calling `create_scheduled_task`
 - If the user wants to change a digest time later, tell them to use `update_scheduled_task`

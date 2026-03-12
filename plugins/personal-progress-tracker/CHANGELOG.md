@@ -1,28 +1,22 @@
-# Changelog — personal-progress-tracker
+# personal-progress-tracker Changelog
 
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+## [2.0.0] — 2026-03-12
 
----
+### Breaking
+- Storage moved from `~/.cowork/memory/` to `~/Documents/ppt-index/`. Onboard now creates this directory structure directly using the Write tool (no bash mkdir required).
 
-## [Unreleased]
-
-## [1.3.0]
 ### Changed
-- Slack channel lookup now includes instructions for grabbing the ID manually via right-click → Copy → Copy link in the Slack sidebar
-- Updated meeting digest scheduled task reference from `cowork-meeting-digest` to `cowork-gemini-notes`
+- Onboard Step 0 now uses Write tool to initialize `~/Documents/ppt-index/INDEX` directly, avoiding VM ephemeral path issues.
+- CLAUDE.md global instruction is written to `~/.claude/CLAUDE.md` via Read + Edit/Write (no bash).
+- Config stored at `~/Documents/ppt-index/config.md`.
+- Recall Step 0 verifies storage by reading `~/Documents/ppt-index/INDEX`.
 
-## [1.2.0]
-### Changed
-- Global instruction setup now writes directly to `~/.claude/CLAUDE.md` instead of prompting the user to paste it manually
-- Slack channel lookup now falls back to searching private channels if not found in public search
-
-## [1.1.0]
-### Changed
-- Slack scheduled task prompt now embeds channel IDs and DM preference collected during onboarding, so the task is self-documenting in the Cowork UI
-
-## [1.0.0]
 ### Added
-- `onboard` skill — connector verification, global instruction setup, Slack channel config, scheduled digest creation
-- `recall` skill — open-ended cross-source memory search across cowork, email, Slack, and meeting sources
-- `memory-schema.md` reference doc for recall skill
+- Private Slack channel ID instructions: right-click channel → Copy → Copy link → extract ID from end of URL.
+- Scheduled task prompts dynamically include configured channel IDs and DM preference.
+
+## [1.4.0] — 2025-12-01
+
+### Added
+- Recall skill with open-ended natural language query against INDEX and daily session files.
+- Memory schema reference document at `skills/recall/references/memory-schema.md`.

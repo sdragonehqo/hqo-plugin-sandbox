@@ -12,25 +12,9 @@ description: >
 
 Process Google Gemini Notes emails from the past 24 hours, retrieve linked Google Drive transcripts, and write structured entries to the cowork memory system. This skill is fully automated — do NOT ask the user for any input.
 
-## Step 0: Mount and Resolve Memory Path
+## Step 0: Verify Storage
 
-Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise data is written to the VM's ephemeral storage and lost when the session ends.
-
-**First, use the Read tool to trigger the mount:**
-
-```
-Read ~/.cowork/memory/INDEX
-```
-
-This causes Cowork to mount your local `~/.cowork/memory` into the session. If the file doesn't exist yet, continue anyway.
-
-**Then create the directory structure and resolve the absolute path:**
-
-```bash
-mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR"
-```
-
-Use the printed absolute path in all subsequent Grep, Read, and Write tool calls. Never use `~` in tool call paths.
+Memory lives at `~/Documents/ppt-index/`. Use this path directly in all Read, Write, and Grep tool calls. If storage doesn't exist yet, run `/personal-progress-tracker:onboard` first.
 
 ## Step 1: Search Gmail for Gemini Notes
 
@@ -100,7 +84,7 @@ For each meeting:
 
 ## Step 6: Write to Memory
 
-For each meeting, append to `RESOLVED_MEMORY_PATH/s/DATE.md`:
+For each meeting, append to `~/Documents/ppt-index/s/DATE.md`:
 ```
 ## TIME|USER|meeting|TAGS
 SUMMARY
@@ -111,7 +95,7 @@ SUMMARY
 - Open: need to decide on vendor for event platform
 ```
 
-For each meeting, append ONE line to `RESOLVED_MEMORY_PATH/INDEX`:
+For each meeting, append ONE line to `~/Documents/ppt-index/INDEX`:
 ```
 DATE|TIME|USER|meeting|TAGS|SUMMARY
 ```

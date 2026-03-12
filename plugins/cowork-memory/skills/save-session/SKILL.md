@@ -5,36 +5,15 @@ description: >
   or the user says "save session", "save progress", "log this", or any request
   to persist the current session's work to memory. It also triggers automatically
   via global instructions after task list completion.
-version: 1.0.0
 ---
 
 # Save Session to Cowork Memory
 
 Persist the current session's completed work to the local cowork memory system. This skill is fully automated — do NOT ask the user for any input.
 
-## Step 0: Mount and Resolve Memory Path
+## Step 0: Verify Storage
 
-Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise data is written to the VM's ephemeral storage and lost when the session ends.
-
-**First, use the Read tool to trigger the mount:**
-
-```
-Read ~/.cowork/memory/INDEX
-```
-
-This causes Cowork to mount your local `~/.cowork/memory` into the session. If the file doesn't exist yet (first run), continue anyway — the mount is still established.
-
-**Then create the directory structure and resolve the absolute path:**
-
-```bash
-mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR"
-```
-
-Use the printed absolute path (e.g. `/Users/yourname/.cowork/memory`) in all subsequent Read, Write, and Grep tool calls. Never use `~` in tool call paths.
-
-**Storage layout:**
-- `MEMORY_DIR/INDEX` — one line per session, pipe-delimited, optimized for Grep
-- `MEMORY_DIR/s/YYYYMMDD.md` — one file per day, all sessions appended
+Memory lives at `~/Documents/ppt-index/`. Use this path directly in all Read, Write, and Grep tool calls. If storage doesn't exist yet, run `/personal-progress-tracker:onboard` first.
 
 ## Step 1: Gather Context
 
@@ -76,7 +55,7 @@ From the task list or conversation, format each item:
 
 ## Step 4: Append to Session File
 
-File path: `MEMORY_DIR/s/DATE.md` (using the resolved path from Step 0)
+File path: `~/Documents/ppt-index/s/DATE.md` (using the resolved path from Step 0)
 
 If the file is **new**, write this header first:
 ```
@@ -97,7 +76,7 @@ Leave one blank line between blocks.
 
 ## Step 5: Append to Index
 
-Append exactly **one line** to `MEMORY_DIR/INDEX` (using the resolved path from Step 0):
+Append exactly **one line** to `~/Documents/ppt-index/INDEX` (using the resolved path from Step 0):
 
 ```
 DATE|TIME|USER|SOURCE|TAGS|SUMMARY
