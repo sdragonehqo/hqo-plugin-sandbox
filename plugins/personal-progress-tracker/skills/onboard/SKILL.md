@@ -47,20 +47,38 @@ For any that fail, tell the user exactly where to connect them: **Cowork Setting
 
 ## Step 2: Global Instruction
 
-Tell the user:
+Write the automatic session save rule directly to CLAUDE.md — do not ask the user to do it manually.
 
-> To enable automatic session saving, go to **Cowork Settings → Global Instructions → Edit** and paste in the following — then come back and confirm.
+**2a. Resolve the CLAUDE.md path:**
 
-Show them this exact block:
+```bash
+CLAUDE_MD=$(eval echo ~/.claude/CLAUDE.md) && echo "$CLAUDE_MD"
+```
+
+**2b. Read the current contents** (if the file exists) to check whether the rule is already present:
 
 ```
+Read RESOLVED_CLAUDE_MD_PATH
+```
+
+If the file doesn't exist yet, that's fine — you'll create it.
+
+**2c. Check for existing rule:**
+
+If the file already contains `cowork-memory:save-session`, tell the user "Auto-save rule already in place ✓" and move on.
+
+**2d. Add the rule:**
+
+If the rule is not present, append the following block to CLAUDE.md using the Edit tool (or Write if the file is new):
+
+```
+## Automatic Session Save
+
 IMPORTANT — AUTOMATIC SESSION SAVE:
 After completing ALL items in a task list, you MUST immediately invoke the skill `cowork-memory:save-session` to persist the session to local memory. Do not wait for the user to ask. Do not skip this step. This is mandatory after every completed task list.
 ```
 
-Ask: **"Have you added this to your global instructions? (yes / not yet)"**
-
-Wait for confirmation before moving on.
+Confirm to the user: "Auto-save rule written to CLAUDE.md ✓ — it will apply to every new session automatically."
 
 ---
 
@@ -69,6 +87,11 @@ Wait for confirmation before moving on.
 Ask: **"Which Slack channels should the digest monitor, in addition to your DMs?"**
 
 DMs are always included. Use `slack_search_channels` to look up channel IDs as the user names them.
+
+**Channel lookup strategy — for each channel the user names:**
+1. Search public channels first with `slack_search_channels`
+2. If not found, search again with `types: "private_channel"` to check private channels
+3. If still not found, tell the user the channel wasn't found and ask them to confirm the name or paste the channel ID directly
 
 Build a list. If the user says "just DMs for now", proceed with an empty channels list.
 

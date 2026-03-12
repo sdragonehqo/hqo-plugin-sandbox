@@ -7,6 +7,11 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [1.2.0]
+### Changed
+- Global instruction setup now writes directly to `~/.claude/CLAUDE.md` instead of prompting the user to paste it manually
+- Slack channel lookup now falls back to searching private channels if not found in public search
+
 ## [1.1.0]
 ### Changed
 - Slack scheduled task prompt now embeds channel IDs and DM preference collected during onboarding, so the task is self-documenting in the Cowork UI
