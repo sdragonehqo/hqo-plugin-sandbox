@@ -1,8 +1,8 @@
 {
   "name": "cowork-memory",
-"description": "Unified persistent memory system for Cowork — saves and retrieves context from sessions, email, Slack, and meetings using flat files optimized for AI search",
+"description": "Automatically saves completed Cowork sessions to local memory. Triggered by global instruction after every completed task list.",
   "author": {
     "name": "Sal Dragone"
   },
-  "keywords": ["memory", "sessions", "context", "recall", "persistence", "digest", "email", "slack", "meetings", "task-master"]
+  "keywords": ["memory", "sessions", "save-session", "persistence"]
 }

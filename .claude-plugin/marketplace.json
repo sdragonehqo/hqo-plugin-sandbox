@@ -12,8 +12,8 @@
     {
       "name": "cowork-memory",
       "source": "./plugins/cowork-memory",
-      "version": "2.0.0",
-      "description": "Unified persistent memory system for Cowork — saves and retrieves context from sessions, email, Slack, and meetings using flat files optimized for AI search",
+      "version": "3.0.0",
+      "description": "Automatically saves completed Cowork sessions to local memory. Triggered by global instruction after every completed task list.",
       "category": "productivity",
       "tags": ["memory", "recall", "digest", "sessions", "email", "slack", "meetings"],
       "author": {
