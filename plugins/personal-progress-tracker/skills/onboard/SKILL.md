@@ -13,10 +13,26 @@ Guide the user through complete setup of the cowork memory system. This skill IS
 
 ## Step 0: Create Memory Storage
 
-Initialize the memory storage directory using the Write tool (this creates the parent directory automatically):
+**First, request access to the Documents folder.** Attempt to read it:
+
+```
+Read ~/Documents/
+```
+
+If the read fails or access is denied, stop and tell the user:
+
+> "I need access to your Documents folder to store memory. Click the **folder icon** in the Cowork toolbar, select your **Documents** folder, then re-run `/personal-progress-tracker:onboard`."
+
+If access succeeds, initialize the memory storage directory using the Write tool (this creates the parent directory automatically):
 
 ```
 Write ~/Documents/ppt-index/INDEX   ← create as an empty file
+```
+
+Also create the daily sessions subdirectory:
+
+```
+Write ~/Documents/ppt-index/s/.keep   ← placeholder to create the s/ directory
 ```
 
 Confirm to the user: "Memory storage created at ~/Documents/ppt-index/ ✓"
@@ -170,6 +186,16 @@ create_scheduled_task(
 ```
 
 Adjust `cronExpression` values if the user requested different times.
+
+**After creating all three tasks**, tell the user:
+
+> "One manual step required: each scheduled task runs in its own fresh session and needs access to your Documents folder. For each of the three tasks just created:
+> 1. Open **Cowork Settings → Scheduled Tasks**
+> 2. Click **Edit** on the task
+> 3. Set the **Working Folder** to your **Documents** folder
+> 4. Save
+>
+> Do this for all three tasks (email, Slack, Gemini Notes) or the digests won't be able to write to memory."
 
 ---
 

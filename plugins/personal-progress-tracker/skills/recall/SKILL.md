@@ -19,7 +19,17 @@ See `./references/memory-schema.md` for the complete schema.
 
 ## Step 0: Verify Storage
 
-Read `~/Documents/ppt-index/INDEX` to confirm the memory system is initialized:
+**First, request access to the Documents folder.** Attempt to read it:
+
+```
+Read ~/Documents/
+```
+
+If the read fails or access is denied, stop and tell the user:
+
+> "I need access to your Documents folder to read memory. Click the **folder icon** in the Cowork toolbar, select your **Documents** folder, then re-run your recall query."
+
+If access succeeds, read the INDEX to confirm the memory system is initialized:
 
 ```
 Read ~/Documents/ppt-index/INDEX
