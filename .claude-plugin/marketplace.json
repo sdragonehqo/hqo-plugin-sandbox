@@ -1,11 +1,11 @@
 {
   "name": "hqo-plugin-marketplace",
   "owner": {
-    "name": "HqO GTM Engineering",
+    "name": "HqO",
     "email": ""
   },
   "metadata": {
-    "description": "HqO Plugin Marketplace — official Claude Code plugins for the HqO team.",
+    "description": "HqO Plugin Marketplace — official Claude Cowork & Code plugins for the HqO team.",
     "version": "1.0.0"
   },
   "plugins": [
