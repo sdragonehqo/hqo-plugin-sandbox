@@ -1,0 +1,24 @@
+{
+  "name": "hqo-plugin-marketplace",
+  "owner": {
+    "name": "HqO GTM Engineering",
+    "email": ""
+  },
+  "metadata": {
+    "description": "HqO Plugin Marketplace — official Claude Code plugins for the HqO team.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "cowork-memory",
+      "source": "./plugins/cowork-memory",
+      "version": "2.0.0",
+      "description": "Unified persistent memory system for Cowork — saves and retrieves context from sessions, email, Slack, and meetings using flat files optimized for AI search",
+      "category": "productivity",
+      "tags": ["memory", "recall", "digest", "sessions", "email", "slack", "meetings"],
+      "author": {
+        "name": "Sal Dragone"
+      }
+    }
+  ]
+}
