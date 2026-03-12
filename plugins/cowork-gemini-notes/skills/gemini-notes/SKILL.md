@@ -12,13 +12,25 @@ description: >
 
 Process Google Gemini Notes emails from the past 24 hours, retrieve linked Google Drive transcripts, and write structured entries to the cowork memory system. This skill is fully automated — do NOT ask the user for any input.
 
-## Step 0: Ensure Storage Exists (ALWAYS run first)
+## Step 0: Mount and Resolve Memory Path
 
-```bash
-mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && echo "RESOLVED_MEMORY_PATH=$(cd ~/.cowork/memory && pwd)"
+Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise data is written to the VM's ephemeral storage and lost when the session ends.
+
+**First, use the Read tool to trigger the mount:**
+
+```
+Read ~/.cowork/memory/INDEX
 ```
 
-Use the value of `RESOLVED_MEMORY_PATH` printed by this command as the absolute path for all subsequent Grep, Read, and Write tool calls instead of `~/.cowork/memory/`.
+This causes Cowork to mount your local `~/.cowork/memory` into the session. If the file doesn't exist yet, continue anyway.
+
+**Then create the directory structure and resolve the absolute path:**
+
+```bash
+mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR"
+```
+
+Use the printed absolute path in all subsequent Grep, Read, and Write tool calls. Never use `~` in tool call paths.
 
 ## Step 1: Search Gmail for Gemini Notes
 

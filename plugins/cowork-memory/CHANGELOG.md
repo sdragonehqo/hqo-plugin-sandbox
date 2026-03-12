@@ -7,6 +7,10 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [3.1.0]
+### Fixed
+- save-session now triggers Cowork directory mount via Read tool before any writes, preventing data loss to VM ephemeral storage
+
 ## [3.0.0]
 ### Changed
 - Plugin now contains only the `save-session` skill

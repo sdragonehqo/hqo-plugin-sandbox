@@ -17,21 +17,25 @@ See `./references/memory-schema.md` for the complete schema.
 
 ---
 
-## Step 0: Resolve Memory Path
+## Step 0: Mount and Resolve Memory Path
+
+Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise the data written by previous sessions won't be visible.
+
+**First, use the Read tool to trigger the mount:**
+
+```
+Read ~/.cowork/memory/INDEX
+```
+
+This causes Cowork to mount your local `~/.cowork/memory` into the session. If this returns an error or empty result, the memory system hasn't been set up yet — tell the user to run `/personal-progress-tracker:onboard`.
+
+**Then resolve the absolute path:**
 
 ```bash
 MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR"
 ```
 
-Use this resolved absolute path in all subsequent Grep and Read tool calls — never use `~` directly.
-
-Then verify memory exists:
-
-```bash
-test -f "$MEMORY_DIR/INDEX" || echo "NO_MEMORY"
-```
-
-If `NO_MEMORY`: tell the user "No memory found. Run `/personal-progress-tracker:onboard` to set up."
+Use the printed absolute path in all subsequent Grep and Read tool calls. Never use `~` in tool call paths.
 
 ---
 

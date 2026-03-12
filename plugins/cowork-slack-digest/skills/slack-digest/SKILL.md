@@ -12,17 +12,29 @@ description: >
 
 Review Slack DMs and configured channels from the past 24 hours, and write structured entries to the cowork memory system. This skill is fully automated — do NOT ask the user for any input.
 
-## Step 0: Ensure Storage Exists (ALWAYS run first)
+## Step 0: Mount and Resolve Memory Path
 
-```bash
-COWORK_DIR=$(eval echo ~/.cowork) && echo "$COWORK_DIR" && mkdir -p "$COWORK_DIR/memory/s" && touch "$COWORK_DIR/memory/INDEX"
+Each Cowork session runs in a fresh VM — your local memory directory must be explicitly mounted before any reads or writes, otherwise data is written to the VM's ephemeral storage and lost when the session ends.
+
+**First, use the Read tool to trigger the mount:**
+
+```
+Read ~/.cowork/memory/INDEX
 ```
 
-Use the resolved path printed by this command (e.g. `/Users/yourname/.cowork`) in all subsequent Grep/Read/Write tool calls instead of `~/.cowork/`. Never use `~` in Grep/Read/Write tool calls — always use the fully expanded absolute path.
+This causes Cowork to mount your local `~/.cowork/memory` into the session. If the file doesn't exist yet, continue anyway.
+
+**Then create the directory structure and resolve the absolute path:**
+
+```bash
+mkdir -p ~/.cowork/memory/s && touch ~/.cowork/memory/INDEX && MEMORY_DIR=$(eval echo ~/.cowork/memory) && echo "$MEMORY_DIR"
+```
+
+Use the printed absolute path in all subsequent Grep, Read, and Write tool calls. Never use `~` in tool call paths.
 
 ## Step 1: Load Channel Configuration
 
-Read `~/.cowork/memory/config.md` for the list of monitored Slack channels. If the file doesn't exist, only process DMs and note that no channels are configured.
+Read `MEMORY_DIR/config.md` (using the resolved path from Step 0) for the list of monitored Slack channels. If the file doesn't exist, only process DMs and note that no channels are configured.
 
 ## Step 2: Determine Time Window
 
@@ -79,7 +91,7 @@ Run `date +%Y%m%d` for DATE and `date +%H%M` for TIME. Run `whoami` once for USE
 
 **Group all Slack activity into ONE entry per digest run.**
 
-Append to `~/.cowork/memory/s/DATE.md`:
+Append to `MEMORY_DIR/s/DATE.md` (using the resolved path from Step 0):
 ```
 ## TIME|USER|slack|TAGS
 SUMMARY
@@ -89,7 +101,7 @@ SUMMARY
 + Greg shared Dream 100 list update
 ```
 
-Append ONE line to `~/.cowork/memory/INDEX`:
+Append ONE line to `MEMORY_DIR/INDEX` (using the resolved path from Step 0):
 ```
 DATE|TIME|USER|slack|TAGS|SUMMARY
 ```
