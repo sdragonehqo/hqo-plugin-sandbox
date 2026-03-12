@@ -1,0 +1,8 @@
+{
+  "name": "personal-progress-tracker",
+  "description": "Onboarding and recall for the cowork memory system. Sets up connectors, global instructions, Slack channels, and scheduled digests. Provides open-ended memory search across all sources.",
+  "author": {
+    "name": "Sal Dragone"
+  },
+  "keywords": ["memory", "recall", "onboard", "setup", "progress", "digest", "schedule"]
+}
