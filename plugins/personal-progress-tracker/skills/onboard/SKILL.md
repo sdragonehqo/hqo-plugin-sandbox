@@ -116,11 +116,26 @@ create_scheduled_task(
 ```
 
 **Slack digest:**
+
+Build the prompt dynamically using the channel config collected in Step 3. Format it as:
+
+```
+Run /cowork-slack-digest:slack-digest
+
+Configuration:
+Include DMs: yes
+Include channels: #channel-name (CXXXXXXXX), #channel-name-2 (CXXXXXXXX)
+```
+
+If the user chose DMs only, set `Include channels: none`.
+
+Then create the task:
+
 ```
 create_scheduled_task(
   taskId: "cowork-slack-digest",
   description: "Daily Slack digest to cowork memory",
-  prompt: "Run /cowork-slack-digest:slack-digest",
+  prompt: <the dynamically built prompt above>,
   cronExpression: "0 8 * * 1-5"
 )
 ```

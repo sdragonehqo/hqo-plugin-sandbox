@@ -7,6 +7,10 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [1.1.0]
+### Changed
+- Slack scheduled task prompt now embeds channel IDs and DM preference collected during onboarding, so the task is self-documenting in the Cowork UI
+
 ## [1.0.0]
 ### Added
 - `onboard` skill — connector verification, global instruction setup, Slack channel config, scheduled digest creation
