@@ -19,6 +19,39 @@
       "author": {
         "name": "Sal Dragone"
       }
+    },
+    {
+      "name": "cowork-email-digest",
+      "source": "./plugins/cowork-email-digest",
+      "version": "1.0.0",
+      "description": "Digests the last 24 hours of Gmail into the cowork memory system. Requires cowork-memory.",
+      "category": "productivity",
+      "tags": ["email", "gmail", "digest", "inbox", "memory"],
+      "author": {
+        "name": "Sal Dragone"
+      }
+    },
+    {
+      "name": "cowork-slack-digest",
+      "source": "./plugins/cowork-slack-digest",
+      "version": "1.0.0",
+      "description": "Digests the last 24 hours of Slack DMs and channels into the cowork memory system. Requires cowork-memory.",
+      "category": "productivity",
+      "tags": ["slack", "digest", "dms", "channels", "memory"],
+      "author": {
+        "name": "Sal Dragone"
+      }
+    },
+    {
+      "name": "cowork-meeting-digest",
+      "source": "./plugins/cowork-meeting-digest",
+      "version": "1.0.0",
+      "description": "Digests the last 24 hours of Gemini meeting notes into the cowork memory system. Requires cowork-memory.",
+      "category": "productivity",
+      "tags": ["meetings", "gemini", "transcripts", "google-drive", "memory"],
+      "author": {
+        "name": "Sal Dragone"
+      }
     }
   ]
 }

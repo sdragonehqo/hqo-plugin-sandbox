@@ -1,0 +1,8 @@
+{
+  "name": "cowork-meeting-digest",
+  "description": "Digests the last 24 hours of Gemini meeting notes into the cowork memory system. Requires cowork-memory to be installed.",
+  "author": {
+    "name": "Sal Dragone"
+  },
+  "keywords": ["meetings", "gemini", "digest", "memory", "transcripts", "google-drive"]
+}

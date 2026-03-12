@@ -1,0 +1,8 @@
+{
+  "name": "cowork-email-digest",
+  "description": "Digests the last 24 hours of Gmail into the cowork memory system. Requires cowork-memory to be installed.",
+  "author": {
+    "name": "Sal Dragone"
+  },
+  "keywords": ["email", "gmail", "digest", "memory", "inbox"]
+}

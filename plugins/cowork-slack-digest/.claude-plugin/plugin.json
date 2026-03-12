@@ -1,0 +1,8 @@
+{
+  "name": "cowork-slack-digest",
+  "description": "Digests the last 24 hours of Slack DMs and channels into the cowork memory system. Requires cowork-memory to be installed.",
+  "author": {
+    "name": "Sal Dragone"
+  },
+  "keywords": ["slack", "digest", "memory", "dms", "channels"]
+}
