@@ -1,0 +1,5 @@
+{
+  "name": "hqo-plugin-scaffold",
+  "description": "Boilerplate and scaffolding tool for building HqO Claude Code plugins. Generates properly structured plugin.json, SKILL.md, and marketplace.json files following HqO conventions.",
+  "skills": "./skills/"
+}

@@ -65,6 +65,17 @@
       }
     },
     {
+      "name": "hqo-plugin-scaffold",
+      "source": "./plugins/hqo-plugin-scaffold",
+      "version": "1.0.0",
+      "description": "Scaffolding tool for building HqO Claude Code plugins. Generates plugin.json, SKILL.md, and CHANGELOG, and merges plugins into the marketplace.",
+      "category": "productivity",
+      "tags": ["scaffold", "plugin", "developer-tools", "skill", "agent"],
+      "author": {
+        "name": "HqO"
+      }
+    },
+    {
       "name": "rex-linkedin-expert",
       "source": "./plugins/rex-linkedin-expert",
       "version": "1.0.0",
