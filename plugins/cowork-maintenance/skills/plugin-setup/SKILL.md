@@ -22,12 +22,15 @@ use — NOT to install plugins for them.
 
 ---
 
-## Step 1: Access Check
+## Step 1: Request Directory Access
 
-Verify read/write access to `~/Documents/`.
+Before any file I/O, explicitly request access to the maintenance directory:
 
-If accessible, ensure the following exist (create if missing):
-- `~/Documents/plugin-maintenance/` — scratch pad directory
+```
+Use request_cowork_directory with path: ~/Documents/plugin-maintenance
+```
+
+Once access is granted, ensure the following exist (create if missing):
 - `~/Documents/plugin-maintenance/maintenance-list.md` — setup log
 
 If `maintenance-list.md` is new, initialize it:
@@ -43,13 +46,25 @@ If `maintenance-list.md` is new, initialize it:
 
 ## Step 2: Discover Installed HqO Plugins
 
-Run the following to list all non-local installed plugins:
+Do NOT use `claude plugins list` — it does not reflect the user's actual
+installed plugins inside the Cowork VM.
 
-```bash
-claude plugins list
+Instead, locate and read the installed plugins manifest:
+
+```
+Glob: /sessions/*/mnt/.local-plugins/installed_plugins.json
 ```
 
-Filter the output: keep only entries that appear in
+Read the file at the matched path. The keys in the JSON object are the
+installed plugins, in the format `<plugin-name>@<marketplace>` (e.g.
+`cowork-memory@hqo-plugin-marketplace`). Each entry also includes a
+`"version"` field — save this for Step 5.
+
+**Save the resolved session path** (e.g.
+`/sessions/tender-affectionate-cerf/mnt`) — you'll need it to read plugin
+docs in Step 5.
+
+Filter: keep only entries whose plugin name appears in
 `references/hqo-plugins.md`. This prevents the skill from touching
 pre-installed remote or built-in Claude Code plugins.
 
@@ -110,27 +125,26 @@ Wait for one confirmation. If the user skips a plugin, note it as
 
 ## Step 5: For Each Plugin (run in order)
 
-### 5a. Read Plugin Docs
+### 5a. Read Plugin Docs from Local Cache
 
-Clone or pull the marketplace:
+Do NOT clone or pull from GitHub. All installed plugin files are already
+cached locally. Use the session path and version resolved in Step 2 to
+construct the cache path:
 
-```bash
-gh repo clone HqOapp/hqo-plugin-marketplace /tmp/hqo-plugin-marketplace
-# or if it exists:
-cd /tmp/hqo-plugin-marketplace && git pull
+```
+<session-path>/.local-plugins/cache/hqo-plugin-marketplace/<plugin-name>/<version>/
 ```
 
 Read in parallel:
-- `plugins/<plugin-name>/CHANGELOG.md`
-- `plugins/<plugin-name>/setup.md` (if it exists — not all plugins have one)
+- `CHANGELOG.md` — understand what the plugin does and its current version
+- `setup.md` — step-by-step setup requirements (may not exist for all plugins)
 
 ### 5b. Universal Tool Check
 
 **This step runs for every plugin, regardless of whether it has a setup.md.**
 
 Check if the plugin requires any MCP tools or external connections
-(documented in its `setup.md` under Requirements, or inferrable from its
-skills). If it does:
+(documented in its `setup.md` under Requirements). If it does:
 
 1. Attempt a lightweight call to verify each required tool is accessible
 2. If a tool is NOT connected, tell the user:
@@ -188,10 +202,11 @@ Log saved to ~/Documents/plugin-maintenance/maintenance-list.md
 ## Rules
 
 - If no HqO plugins are installed, stop at Step 2 — do not proceed
-- Skip `hqo-plugin-scaffold` always — it's for developers only
-- Not every plugin has a setup.md — the universal tool check (5b) is always
-  the minimum for any plugin that has tool requirements
+- Never run `claude plugins list` — use `installed_plugins.json` instead
+- Never clone the marketplace repo — read plugin files from local cache
 - Never run setup for `cowork-maintenance` or `hqo-plugin-scaffold` — always excluded
+- Not every plugin has a setup.md — the universal tool check (5b) is the
+  minimum for any plugin with tool requirements
 - Never re-run setup for a plugin already marked `✓ complete` unless the
   user explicitly requests it
 - Never attempt setup for plugins not in `references/hqo-plugins.md`
