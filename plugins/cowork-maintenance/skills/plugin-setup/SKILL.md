@@ -79,7 +79,7 @@ Read `~/Documents/plugin-maintenance/maintenance-list.md`.
 
 Extract plugins already marked `✓ complete`.
 
-**Needs setup** = (installed HqO plugins) − (already set up) − (`hqo-plugin-scaffold`, which is developer-only and has no onboarding)
+**Needs setup** = (installed HqO plugins) − (already set up) − (`hqo-plugin-scaffold`, developer-only) − (`cowork-maintenance`, this plugin itself)
 
 If everything is already set up, tell the user and offer to re-run for a
 specific plugin if they want. Stop here unless they confirm.
@@ -191,6 +191,7 @@ Log saved to ~/Documents/plugin-maintenance/maintenance-list.md
 - Skip `hqo-plugin-scaffold` always — it's for developers only
 - Not every plugin has a setup.md — the universal tool check (5b) is always
   the minimum for any plugin that has tool requirements
+- Never run setup for `cowork-maintenance` or `hqo-plugin-scaffold` — always excluded
 - Never re-run setup for a plugin already marked `✓ complete` unless the
   user explicitly requests it
 - Never attempt setup for plugins not in `references/hqo-plugins.md`
