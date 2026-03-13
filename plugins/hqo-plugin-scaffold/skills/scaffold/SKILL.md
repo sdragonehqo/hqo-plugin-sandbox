@@ -41,6 +41,7 @@ Create the following directory structure:
 ├── .claude-plugin/
 │   └── plugin.json
 ├── CHANGELOG.md
+├── setup.md
 └── skills/
     └── <skill-name>/
         └── SKILL.md
@@ -49,6 +50,9 @@ Create the following directory structure:
 **plugin.json** — use the reference template at `./references/plugin-json.md`
 **SKILL.md** — use the reference template at `./references/skill-md.md`
 **CHANGELOG.md** — use the reference template at `./references/changelog.md`
+**setup.md** — document any connections, MCP servers, credentials, or first-run
+steps required for this plugin. This is read by `cowork-maintenance` during
+onboarding. Individual plugin skills must NOT reference this file.
 
 ### If adding a NEW SKILL to an existing plugin:
 
@@ -78,8 +82,11 @@ Files written:
 
 Next steps:
   1. Fill in the SKILL.md with your skill logic
-  2. When ready to publish, use /merge-plugin
+  2. Fill in setup.md with any connections or first-run requirements
+  3. When ready to publish, use /merge-plugin
      — it will push to the sandbox first, confirm it loads, then push to main
+  4. After merging, add the plugin name to cowork-maintenance's
+     skills/plugin-setup/references/hqo-plugins.md
 ```
 
 ---

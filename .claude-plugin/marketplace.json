@@ -76,6 +76,17 @@
       }
     },
     {
+      "name": "cowork-maintenance",
+      "source": "./plugins/cowork-maintenance",
+      "version": "1.0.0",
+      "description": "Master onboarding and debugging plugin for HqO Claude Code plugins. Automatically detects installed plugins, tracks setup state, and runs onboarding.",
+      "category": "productivity",
+      "tags": ["maintenance", "onboarding", "setup", "debugging", "plugins"],
+      "author": {
+        "name": "HqO"
+      }
+    },
+    {
       "name": "rex-linkedin-expert",
       "source": "./plugins/rex-linkedin-expert",
       "version": "1.0.0",

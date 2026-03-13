@@ -1,0 +1,9 @@
+{
+  "name": "cowork-maintenance",
+  "description": "Master onboarding and debugging plugin for HqO Claude Code plugins. Automatically detects installed HqO plugins, tracks setup state, and runs onboarding so the user only needs to confirm.",
+  "author": {
+    "name": "HqO"
+  },
+  "keywords": ["maintenance", "onboarding", "setup", "debugging", "plugins"],
+  "skills": "./skills/"
+}
