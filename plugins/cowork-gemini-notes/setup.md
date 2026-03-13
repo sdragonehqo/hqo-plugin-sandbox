@@ -3,34 +3,51 @@
 ## Requirements
 
 - **Gmail MCP connector** — must be connected in Cowork Settings → Connectors. The skill calls `gmail_search_messages` and `gmail_read_message` to find Gemini Notes emails from `gemini-notes@google.com`.
-- **Google Drive MCP connector** — must be connected in Cowork Settings → Connectors. The skill calls `google_drive_search` and `google_drive_fetch` to retrieve meeting transcript documents.
-- Read/write access to `~/Documents/` — writes digests to `~/Documents/ppt-index/`
-- `cowork-memory` and `personal-progress-tracker` must be set up first — the `~/Documents/ppt-index/` storage must already exist before the digest can write to it
+- **Google Drive MCP connector** — must be connected in Cowork Settings → Connectors. The skill calls `google_drive_search` and `google_drive_fetch` to retrieve meeting transcript documents from Drive.
+- `cowork-memory` already set up — `~/Documents/ppt-index/` must exist before the digest can write to it
+- Read/write access to `~/Documents/` — digests are written to `~/Documents/ppt-index/`
 
-## First-Run Steps
+## Setup Steps
 
-1. Ensure `cowork-memory` is set up and `personal-progress-tracker:onboard` has been run so that `~/Documents/ppt-index/` exists.
-2. Connect Gmail in Cowork Settings → Connectors (required for finding Gemini Notes emails).
-3. Connect Google Drive in Cowork Settings → Connectors (required for fetching transcript documents). Verify by running `google_drive_search` with a minimal query — it should return results without error.
-4. Ensure Google Gemini is enabled in your Google Workspace and configured to send meeting notes emails. Notes emails arrive from `gemini-notes@google.com` after meetings.
-5. Run `/personal-progress-tracker:onboard` (if not already done) to schedule the digest as a recurring task. The default schedule is weekdays at 9:00am via the `cowork-gemini-notes` scheduled task.
-6. After scheduling, open Cowork Settings → Scheduled Tasks, click Edit on the `cowork-gemini-notes` task, set the Working Folder to your Documents folder, and save.
+1. Ensure `cowork-memory` is set up first. Run `/personal-progress-tracker:onboard` if you have not already — this creates `~/Documents/ppt-index/` and initializes the index.
+
+2. Connect **Gmail** in Cowork Settings → Connectors. Verify by invoking `gmail_get_profile` — it should return your Gmail address without error.
+
+3. Connect **Google Drive** in Cowork Settings → Connectors. Verify by invoking `google_drive_search` with a minimal query — it should return results without error.
+
+4. Ensure Google Gemini is enabled in your Google Workspace and configured to send meeting notes emails. After meetings, Gemini sends summary emails from `gemini-notes@google.com` containing a link to the Google Docs transcript. Both the Gmail and Google Drive connectors must be active for the full transcript to be fetched.
+
+5. Schedule the Gemini Notes digest as a recurring task. The recommended way is via `/personal-progress-tracker:onboard`, which creates the task automatically:
+
+   ```
+   taskId: "cowork-gemini-notes"
+   description: "Daily Gemini Notes digest to cowork memory"
+   prompt: "Run /cowork-gemini-notes:gemini-notes"
+   cronExpression: "0 9 * * 1-5"   ← weekdays at 9:00am
+   ```
+
+   If you want a different time, confirm your preferred time during onboarding or update the task afterward with `update_scheduled_task`.
+
+6. After the task is created, open **Cowork Settings → Scheduled Tasks**, click **Edit** on the `cowork-gemini-notes` task, set the **Working Folder** to your **Documents** folder, and save.
 
 ## Verification
 
 Run `/cowork-gemini-notes:gemini-notes` manually on a day when you have had meetings. It should:
 1. Search Gmail for messages from `gemini-notes@google.com` in the past 24 hours
-2. For each email, attempt to extract a Google Docs link or search Google Drive by meeting title using `name contains '<title>'` ordered by `modifiedTime desc`
-3. Fetch each transcript document and extract decisions, action items, attendees, and open questions
-4. Write one entry per meeting (not grouped) to `~/Documents/ppt-index/s/YYYYMMDD.md`
-5. Append one line per meeting to `~/Documents/ppt-index/INDEX`
-6. Output: `Gemini Notes digest saved. X meeting(s) processed` followed by each meeting title and its action item count
+2. For each email, attempt to extract a Google Docs link from the body; if not found (expected — the Gmail MCP strips HTML hyperlinks from plain-text output), fall back to searching Drive with `name contains '<meeting title>'` ordered by `modifiedTime desc`
+3. Fetch the full transcript document with `google_drive_fetch`
+4. Extract attendees, decisions (`+` items), action items (`-` items), key topics, and open questions (`-` items)
+5. Write one entry per meeting (not grouped) to `~/Documents/ppt-index/s/YYYYMMDD.md`
+6. Append one line per meeting to `~/Documents/ppt-index/INDEX`
+7. Output: `Gemini Notes digest saved. X meeting(s) processed` followed by each meeting title and its action item count
+
+If no Gemini Notes emails are found, it outputs `No new Gemini Notes in the past 24 hours.` and stops — that is expected behavior.
 
 ## Notes
 
-- Storage path changed in v3.0.0 from `~/.cowork/memory/` to `~/Documents/ppt-index/`. Existing data at the old path will not be migrated.
-- This plugin was renamed in v3.0.0 from `cowork-meeting-digest` / `meeting-digest` to `cowork-gemini-notes` / `gemini-notes`.
-- Unlike email and Slack digests, each meeting gets its own memory entry — they are not grouped.
-- The Gmail MCP returns plain-text MIME parts only, stripping the embedded Google Doc hyperlink from Gemini Notes emails. The skill handles this with a Google Drive search fallback using `name contains` (not `fullText contains`) to allow `modifiedTime desc` ordering. This is by design.
-- If a transcript document cannot be found on Drive, the entry is noted as `[Transcript unavailable]` and the skill continues.
-- This plugin depends on `personal-progress-tracker` for scheduled task setup and on `cowork-memory` for storage.
+- Unlike the email and Slack digests, each meeting gets its own separate memory entry — they are not grouped into one
+- Decisions are prefixed `+ Decision:`, action items `- Action:`, and open questions `- Open:` in the session file
+- The Gmail MCP returns only the plain-text MIME part, which strips the embedded Google Doc hyperlink from Gemini Notes emails. The Drive search fallback uses `name contains` (not `fullText contains`) because `fullText contains` does not support `modifiedTime desc` ordering — this is by design
+- If a transcript document cannot be found on Drive, the skill notes `[Transcript unavailable]` for that meeting and continues processing the rest
+- The Working Folder on the scheduled task must be set manually after onboarding — the skill cannot write to `~/Documents/ppt-index/` without it
+- This plugin depends on `personal-progress-tracker` for scheduled task setup and on `cowork-memory` for storage
