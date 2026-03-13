@@ -94,9 +94,11 @@ Confirm to the user: "Auto-save rule written to CLAUDE.md ✓ — it will apply 
 
 ## Step 3: Configure Slack Channels
 
-Ask: **"Which Slack channels should the digest monitor, in addition to your DMs?"**
+Ask two questions:
 
-DMs are always included. Use `slack_search_channels` to look up channel IDs as the user names them.
+**3a.** **"Which Slack channels should the digest monitor, in addition to your DMs?"**
+
+Use `slack_search_channels` to look up channel IDs as the user names them.
 
 **Channel lookup strategy — for each channel the user names:**
 1. Search public channels first with `slack_search_channels`
@@ -105,7 +107,11 @@ DMs are always included. Use `slack_search_channels` to look up channel IDs as t
 
 > "I couldn't find that channel. To get the ID: right-click the channel name in the left sidebar of Slack → hover over **Copy** → click **Copy link**. The link will look like `https://app.slack.com/client/TXXXXXXXX/CXXXXXXXX` — the channel ID is the part starting with **C** at the end of the URL. Paste that here and I'll add it."
 
-Build a list. If the user says "just DMs for now", proceed with an empty channels list.
+If the user says "just DMs for now", proceed with an empty channels list.
+
+**3b.** **"Are there any DMs or group messages you'd like to exclude from the digest?"**
+
+This is optional. If the user names people or groups, collect their Slack handles or names. If they say none, leave the exclusions list empty.
 
 Write to `~/Documents/ppt-index/config.md`:
 
@@ -120,9 +126,19 @@ Monitored in addition to DMs:
 |---|---|
 | #channel-name | CXXXXXXXX |
 
+## Excluded DMs
+
+People or groups whose DMs should be skipped:
+
+| Name / Handle |
+|---|
+| @username |
+
 ## Setup Date
 YYYY-MM-DD
 ```
+
+If there are no excluded DMs, omit the Excluded DMs table entirely.
 
 ---
 
@@ -152,7 +168,7 @@ create_scheduled_task(
 
 **Slack digest:**
 
-Build the prompt dynamically using the channel config collected in Step 3. Format it as:
+Build the prompt dynamically using the channel config and exclusions collected in Step 3. Format it as:
 
 ```
 Run /cowork-slack-digest:slack-digest
@@ -160,9 +176,11 @@ Run /cowork-slack-digest:slack-digest
 Configuration:
 Include DMs: yes
 Include channels: #channel-name (CXXXXXXXX), #channel-name-2 (CXXXXXXXX)
+Exclude DMs: @username1, @username2
 ```
 
 If the user chose DMs only, set `Include channels: none`.
+If there are no DM exclusions, omit the `Exclude DMs` line entirely.
 
 Then create the task:
 

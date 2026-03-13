@@ -13,7 +13,12 @@
 
 2. Connect Slack in Cowork Settings → Connectors. Verify the connection by invoking `slack_read_user_profile` with no arguments — it should return your Slack profile without error.
 
-3. Run `/personal-progress-tracker:onboard` (if not already done). During onboarding, you will be asked: **"Which Slack channels should the digest monitor, in addition to your DMs?"** DMs are always included. The onboard skill looks up channel IDs using `slack_search_channels` (searching public channels first, then private) and writes the config to `~/Documents/ppt-index/config.md` in this format:
+3. Run `/personal-progress-tracker:onboard` (if not already done). During onboarding you will be asked two questions about Slack:
+
+   - **"Which Slack channels should the digest monitor, in addition to your DMs?"** — name any channels you want included. DMs are always included. Say "just DMs" to skip channels.
+   - **"Are there any DMs or group messages you'd like to exclude from the digest?"** — optional. Name any people or groups whose DMs should be skipped.
+
+   The onboard skill looks up channel IDs using `slack_search_channels` and writes config to `~/Documents/ppt-index/config.md`:
 
    ```markdown
    # Cowork Memory — Configuration
@@ -26,11 +31,19 @@
    |---|---|
    | #channel-name | CXXXXXXXX |
 
+   ## Excluded DMs
+
+   People or groups whose DMs should be skipped:
+
+   | Name / Handle |
+   |---|
+   | @username |
+
    ## Setup Date
    YYYY-MM-DD
    ```
 
-   If you say "just DMs for now", the channels table is left empty and only DMs are monitored.
+   The Excluded DMs table is omitted if you have no exclusions.
 
 4. **Finding private channel IDs manually:** If a channel cannot be found by `slack_search_channels`, right-click the channel name in Slack's left sidebar → hover over **Copy** → click **Copy link**. The URL looks like `https://app.slack.com/client/TXXXXXXXX/CXXXXXXXX` — the channel ID is the segment starting with **C** at the end. Paste that ID during onboarding and it will be added to `config.md`.
 
@@ -45,10 +58,12 @@
      Configuration:
      Include DMs: yes
      Include channels: #channel-name (CXXXXXXXX), #channel-name-2 (CXXXXXXXX)
+     Exclude DMs: @username1, @username2
    cronExpression: "0 8 * * 1-5"   ← weekdays at 8:00am
    ```
 
-   If the user chose DMs only, the prompt sets `Include channels: none`.
+   If you chose DMs only, the prompt sets `Include channels: none`.
+   If you have no DM exclusions, the `Exclude DMs` line is omitted.
 
 6. After the task is created, open **Cowork Settings → Scheduled Tasks**, click **Edit** on the `cowork-slack-digest` task, set the **Working Folder** to your **Documents** folder, and save.
 
@@ -68,6 +83,6 @@ Run `/cowork-slack-digest:slack-digest` manually. It should:
 - If `config.md` does not exist, the skill processes DMs only and notes that no channels are configured — it does not fail
 - All Slack activity in a single digest run is grouped into ONE memory entry
 - Full threads are always fetched before summarizing — the skill never summarizes from preview text alone
-- The scheduled task prompt is built dynamically during `personal-progress-tracker:onboard` to embed the configured channel IDs. If you add or remove channels later, re-run onboard or manually update the scheduled task prompt in Cowork Settings → Scheduled Tasks
+- The scheduled task prompt is built dynamically during `personal-progress-tracker:onboard` to embed the configured channel IDs and DM exclusions. If you add/remove channels or change exclusions later, re-run onboard or manually update the scheduled task prompt in Cowork Settings → Scheduled Tasks
 - The Working Folder on the scheduled task must be set manually after onboarding — the skill cannot write to `~/Documents/ppt-index/` without it
 - This plugin depends on `personal-progress-tracker` for scheduled task setup and channel config, and on `cowork-memory` for storage
