@@ -4,12 +4,5 @@
   "author": {
     "name": "HqO"
   },
-  "keywords": ["linkedin", "thought-leadership", "rex", "hqo", "personal-brand", "content-strategy"],
-  "skills": [
-    {
-      "name": "rex-linkedin-expert",
-      "path": "../skills/rex-linkedin-expert/SKILL.md",
-      "description": "Build REX Expert LinkedIn thought leadership presence aligned with HqO's REX methodology"
-    }
-  ]
+  "keywords": ["linkedin", "thought-leadership", "rex", "hqo", "personal-brand", "content-strategy"]
 }
