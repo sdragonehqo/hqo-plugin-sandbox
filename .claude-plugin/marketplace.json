@@ -63,6 +63,17 @@
       "author": {
         "name": "Sal Dragone"
       }
+    },
+    {
+      "name": "rex-linkedin-expert",
+      "source": "./plugins/rex-linkedin-expert",
+      "version": "0.1.0",
+      "description": "Build your REX Expert LinkedIn thought leadership presence aligned with HqO's REX methodology. Define your niche, draft posts in your voice, and evolve your positioning over time.",
+      "category": "productivity",
+      "tags": ["linkedin", "thought-leadership", "rex", "hqo", "personal-brand", "content-strategy"],
+      "author": {
+        "name": "HqO"
+      }
     }
   ]
 }
