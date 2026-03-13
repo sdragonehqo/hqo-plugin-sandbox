@@ -12,7 +12,7 @@
     {
       "name": "cowork-memory",
       "source": "./plugins/cowork-memory",
-      "version": "4.0.0",
+      "version": "4.0.1",
       "description": "Automatically saves completed Cowork sessions to local memory. Triggered by global instruction after every completed task list.",
       "category": "productivity",
       "tags": ["memory", "recall", "digest", "sessions", "email", "slack", "meetings"],
@@ -34,7 +34,7 @@
     {
       "name": "cowork-slack-digest",
       "source": "./plugins/cowork-slack-digest",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "description": "Digests the last 24 hours of Slack DMs and channels into the cowork memory system. Requires cowork-memory.",
       "category": "productivity",
       "tags": ["slack", "digest", "dms", "channels", "memory"],
@@ -56,7 +56,7 @@
     {
       "name": "personal-progress-tracker",
       "source": "./plugins/personal-progress-tracker",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "description": "Onboarding and recall for the cowork memory system. Verifies connectors, sets up global instructions, configures Slack channels, schedules digests, and provides open-ended memory search.",
       "category": "productivity",
       "tags": ["onboard", "recall", "memory", "setup", "schedule", "progress"],
@@ -67,7 +67,7 @@
     {
       "name": "hqo-plugin-scaffold",
       "source": "./plugins/hqo-plugin-scaffold",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Scaffolding tool for building HqO Claude Code plugins. Generates plugin.json, SKILL.md, and CHANGELOG, and merges plugins into the marketplace.",
       "category": "productivity",
       "tags": ["scaffold", "plugin", "developer-tools", "skill", "agent"],
@@ -78,7 +78,7 @@
     {
       "name": "cowork-maintenance",
       "source": "./plugins/cowork-maintenance",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Master onboarding and debugging plugin for HqO Claude Code plugins. Automatically detects installed plugins, tracks setup state, and runs onboarding.",
       "category": "productivity",
       "tags": ["maintenance", "onboarding", "setup", "debugging", "plugins"],

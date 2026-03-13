@@ -1,5 +1,14 @@
 # hqo-plugin-scaffold Changelog
 
+## [1.1.0] — 2026-03-13
+
+### Fixed
+- scaffold skill: removed incorrect instruction to update skills array when adding a new skill (skills are auto-discovered)
+- scaffold skill: setup.md now included in Files written confirmation
+- references/skill-md.md: fixed path prefix, updated Step 0 to reference cowork-maintenance:plugin-setup
+- references/marketplace-entry.md: author field is now a placeholder instead of hardcoded name
+- references/changelog.md: fixed path prefix
+
 ## [1.0.0] — 2026-03-13
 
 ### Added

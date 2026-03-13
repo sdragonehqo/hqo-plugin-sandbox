@@ -1,5 +1,11 @@
 # cowork-slack-digest Changelog
 
+## [2.1.0] — 2026-03-13
+
+### Changed
+- setup.md is now fully self-contained: channel config and DM exclusion steps run directly during maintenance onboarding — no longer depends on personal-progress-tracker:onboard (which is disabled)
+- Added explicit step to ask which channels to include and which DMs to exclude before writing config.md
+
 ## [2.0.0] — 2026-03-12
 
 ### Breaking

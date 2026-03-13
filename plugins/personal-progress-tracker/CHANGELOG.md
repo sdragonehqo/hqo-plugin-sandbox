@@ -1,5 +1,11 @@
 # personal-progress-tracker Changelog
 
+## [2.1.0] — 2026-03-13
+
+### Changed
+- `onboard` skill disabled (renamed to SKILL.md.disabled) — onboarding is now handled per-plugin by cowork-maintenance
+- `recall` skill remains active and unchanged
+
 ## [2.0.0] — 2026-03-12
 
 ### Breaking
