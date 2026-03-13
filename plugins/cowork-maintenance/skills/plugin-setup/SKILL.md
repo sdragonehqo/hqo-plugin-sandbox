@@ -27,7 +27,7 @@ use — NOT to install plugins for them.
 Before any file I/O, explicitly request access to the maintenance directory:
 
 ```
-Use request_cowork_directory with path: ~/Documents/plugin-maintenance
+Use request_cowork_directory with path: ~/Documents
 ```
 
 Once access is granted, ensure the following exist (create if missing):
