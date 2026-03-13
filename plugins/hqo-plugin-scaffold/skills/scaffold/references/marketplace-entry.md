@@ -11,7 +11,7 @@ Add this object to the `plugins` array in `.claude-plugin/marketplace.json`.
   "category": "productivity",
   "tags": ["<tag1>", "<tag2>", "<tag3>"],
   "author": {
-    "name": "Sal Dragone"
+    "name": "<Author Name>"
   }
 }
 ```

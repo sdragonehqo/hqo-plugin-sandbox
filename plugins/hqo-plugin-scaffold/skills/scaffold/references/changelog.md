@@ -1,6 +1,6 @@
 # CHANGELOG.md — Reference Template
 
-Paste this into `plugins/<plugin-name>/CHANGELOG.md` and fill in the date.
+Paste this into `<plugin-name>/CHANGELOG.md` and fill in the date.
 
 ```markdown
 # <plugin-name> Changelog

@@ -63,8 +63,9 @@ Create:
 └── SKILL.md
 ```
 
-Add the skill to the `skills` array in `<plugin-name>/.claude-plugin/plugin.json`.
-Do NOT change the version field — version lives only in `marketplace.json`.
+Skills are auto-discovered from the `skills/` directory — no changes needed
+to `plugin.json`. Do NOT touch the version field — version lives only in
+`marketplace.json`.
 
 ---
 
@@ -78,6 +79,7 @@ Scaffolded: <plugin-name>/<skill-name>
 Files written:
   <plugin-name>/.claude-plugin/plugin.json
   <plugin-name>/CHANGELOG.md
+  <plugin-name>/setup.md
   <plugin-name>/skills/<skill-name>/SKILL.md
 
 Next steps:

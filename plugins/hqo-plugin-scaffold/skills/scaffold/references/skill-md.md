@@ -1,6 +1,6 @@
 # SKILL.md — Reference Template
 
-Paste this into `plugins/<plugin-name>/skills/<skill-name>/SKILL.md`.
+Paste this into `<plugin-name>/skills/<skill-name>/SKILL.md`.
 
 ```markdown
 ---
@@ -22,7 +22,7 @@ This skill is [fully automated — do NOT ask the user for any input] OR [conver
 <If the skill reads/writes cowork memory:>
 Memory lives at `~/Documents/ppt-index/`. Read `~/Documents/ppt-index/INDEX`
 to confirm storage exists. If not found, tell the user to run
-`/personal-progress-tracker:onboard` first.
+`/cowork-maintenance:plugin-setup` first to complete onboarding.
 
 ---
 
