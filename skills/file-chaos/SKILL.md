@@ -13,28 +13,47 @@ Creates a folder of realistically messy, badly-named files — the kind every co
 
 ## Step 1: Ask Where to Create the Files
 
-Use AskUserQuestion to ask the user where they want the demo files created, so they can open that folder and watch the files appear in real time.
+**MANDATORY — DO NOT SKIP THIS STEP. You MUST use AskUserQuestion before creating any files.**
 
-Question: "Where should I create the demo files?"
-Options:
-- **Desktop** (Recommended) — `~/Desktop/cowork-demo-files/` — easy to watch files appear live
-- **Documents** — `~/Documents/cowork-demo-files/`
-- **Downloads** — `~/Downloads/cowork-demo-files/`
+Call the AskUserQuestion tool with this exact question before doing anything else:
+
+- **question**: "Where should I create the demo files? Pick a spot you can see — open that folder and watch the files appear live."
+- **header**: "File location"
+- **options**:
+  - label: "Desktop (Recommended)", description: "~/Desktop/cowork-demo-files/ — easiest to watch files appear in real time"
+  - label: "Documents", description: "~/Documents/cowork-demo-files/"
+  - label: "Downloads", description: "~/Downloads/cowork-demo-files/"
+
+Wait for the user's answer. Map their choice to a path:
+- Desktop → `~/Desktop/cowork-demo-files/`
+- Documents → `~/Documents/cowork-demo-files/`
+- Downloads → `~/Downloads/cowork-demo-files/`
+- Other (custom) → use whatever path they provide
 
 Store the chosen path as DEMO_DIR.
 
 ---
 
-## Step 2: Create the Chaos
+## Step 2: Create the Folder and Open It in Finder
 
-Print:
+First, create the empty folder and immediately open it in Finder so the user can watch:
+
+```bash
+mkdir -p [DEMO_DIR] && open [DEMO_DIR]
 ```
-📁 File Chaos — creating the mess in [DEMO_DIR].
 
-Open that folder now if you want to watch.
+Then print:
+```
+📁 Folder created and opened in Finder. Watch it — files are about to start appearing.
 ```
 
-Use the Bash tool to create the demo folder at DEMO_DIR and populate it with 20 realistically-named messy files.
+**Pause 2 seconds** (use `sleep 2` in Bash) to give the user time to see the Finder window.
+
+---
+
+## Step 3: Create the Chaos
+
+Now create the files. Use the Bash tool to populate the folder with 20 realistically-named messy files.
 
 Then create the following files with realistic dummy content:
 
@@ -80,7 +99,7 @@ Step 2 of 3: Reading every file to understand what's actually in them...
 
 ---
 
-## Step 3: Read and Categorize
+## Step 4: Read and Categorize
 
 Use the Read tool or Bash `cat` to read the contents of each file. Based on the content (not the filename), assign each file to one of these categories:
 
@@ -107,7 +126,7 @@ Moving files now...
 
 ---
 
-## Step 4: Organize the Files
+## Step 5: Organize the Files
 
 Use Bash to create the subdirectories and move files into them based on the categorization above.
 
@@ -134,7 +153,7 @@ That's the difference.
 
 ---
 
-## Step 5: Offer Cleanup
+## Step 6: Offer Cleanup
 
 Print:
 ```
