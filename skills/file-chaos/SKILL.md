@@ -24,84 +24,87 @@ Call the AskUserQuestion tool with this exact question before doing anything els
   - label: "Documents", description: "~/Documents/cowork-demo-files/"
   - label: "Downloads", description: "~/Downloads/cowork-demo-files/"
 
-Wait for the user's answer. Map their choice to a path:
-- Desktop → `~/Desktop/cowork-demo-files/`
-- Documents → `~/Documents/cowork-demo-files/`
-- Downloads → `~/Downloads/cowork-demo-files/`
-- Other (custom) → use whatever path they provide
+Wait for the user's answer. Map their choice to an **absolute path** (resolve `~` to the user's actual home directory, e.g. `/Users/username/Desktop/cowork-demo-files/`):
+- Desktop → `/Users/[username]/Desktop/cowork-demo-files/`
+- Documents → `/Users/[username]/Documents/cowork-demo-files/`
+- Downloads → `/Users/[username]/Downloads/cowork-demo-files/`
+- Other (custom) → resolve to absolute path
 
-Store the chosen path as DEMO_DIR.
+Store the chosen absolute path as DEMO_DIR.
 
 ---
 
-## Step 2: Create the Folder and Open It in Finder
+## Step 2: Request Directory Access and Create First File
 
-First, create the empty folder and immediately open it in Finder so the user can watch:
+**CRITICAL: You MUST use the Write tool (NOT Bash) to create files. The Bash tool is sandboxed and will write to a temp directory — the user will NOT see those files on their actual computer. The Write tool writes to the real filesystem and triggers the directory access permission prompt.**
 
+Use the Write tool to create the first file at the absolute path. This will trigger the "Claude would like to Cowork in ~/Desktop" permission prompt, which the user must approve:
+
+Write file: `[DEMO_DIR]/report_FINAL_v3_USE_THIS_ONE.txt`
+Content: `Q4 2025 Revenue Summary\nTotal Revenue: $4.2M\nGrowth: 18% YoY\nKey driver: Enterprise segment up 34%`
+
+After the user approves access and the first file is created, print:
+```
+📁 Access granted. Creating the mess now — watch your folder.
+```
+
+Then open the folder in Finder so the user can watch:
 ```bash
-mkdir -p [DEMO_DIR] && open [DEMO_DIR]
+open [DEMO_DIR]
 ```
-
-Then print:
-```
-📁 Folder created and opened in Finder. Watch it — files are about to start appearing.
-```
-
-**Pause 2 seconds** (use `sleep 2` in Bash) to give the user time to see the Finder window.
 
 ---
 
-## Step 3: Create the Chaos
+## Step 3: Create the Remaining Files
 
-Now create the files. Use the Bash tool to populate the folder with 20 realistically-named messy files.
+Use the **Write tool** for every file. You may call multiple Write tool calls in parallel to create files faster — but NEVER use Bash echo/heredoc to create files (those go to a sandbox, not the real filesystem).
 
-Then create the following files with realistic dummy content:
+Create these 19 remaining files in DEMO_DIR using the Write tool:
 
 **Messy financial files:**
-- `report_FINAL_v3_USE_THIS_ONE.txt` → content: "Q4 2025 Revenue Summary\nTotal Revenue: $4.2M\nGrowth: 18% YoY\nKey driver: Enterprise segment up 34%"
-- `q3 numbers revised (2).txt` → content: "Q3 2025 Financial Results\nRevenue: $3.6M\nEBITDA margin: 22%\nHeadcount: 142"
-- `ACTUAL_budget_final_FINAL.txt` → content: "FY2026 Budget Proposal\nTotal: $18.5M\nEngineering: $7.2M\nSales: $5.1M\nG&A: $6.2M"
-- `untitled document 3.txt` → content: "Invoice #4421\nClient: Brookfield Properties\nAmount: $24,500\nDue: 2026-02-01"
+- `q3 numbers revised (2).txt` → "Q3 2025 Financial Results\nRevenue: $3.6M\nEBITDA margin: 22%\nHeadcount: 142"
+- `ACTUAL_budget_final_FINAL.txt` → "FY2026 Budget Proposal\nTotal: $18.5M\nEngineering: $7.2M\nSales: $5.1M\nG&A: $6.2M"
+- `untitled document 3.txt` → "Invoice #4421\nClient: Brookfield Properties\nAmount: $24,500\nDue: 2026-02-01"
 
 **Messy meeting notes:**
-- `notes.txt` → content: "Meeting with Sarah re: product roadmap\nAction items: finalize Q2 milestones, share deck with board\nNext sync: Thursday 2pm"
-- `notes (copy).txt` → content: "1:1 with Marcus\nDiscussed pipeline concerns, he's worried about Q1 close rate\nFollow up: send competitive analysis"
-- `mtg_notes_jan_idk.txt` → content: "All-hands recap\nCEO shared 2026 vision\nKey theme: customer retention over new logo growth\nQ&A: 14 questions submitted"
-- `IMPORTANT read this.txt` → content: "Reminder: board deck due EOD Friday\nNeed sign-off from CFO before sending\nLegal review still pending on slide 12"
+- `notes.txt` → "Meeting with Sarah re: product roadmap\nAction items: finalize Q2 milestones, share deck with board\nNext sync: Thursday 2pm"
+- `notes (copy).txt` → "1:1 with Marcus\nDiscussed pipeline concerns, he's worried about Q1 close rate\nFollow up: send competitive analysis"
+- `mtg_notes_jan_idk.txt` → "All-hands recap\nCEO shared 2026 vision\nKey theme: customer retention over new logo growth\nQ&A: 14 questions submitted"
+- `IMPORTANT read this.txt` → "Reminder: board deck due EOD Friday\nNeed sign-off from CFO before sending\nLegal review still pending on slide 12"
 
 **Messy HR/people files:**
-- `New hire stuff.txt` → content: "Onboarding checklist for Jamie Rodriguez\nStart date: March 3\nRole: Senior AE, West Coast\nEquipment: MacBook Pro, requested standing desk"
-- `offer_letter_template_v2_updated.txt` → content: "Employment Offer Letter Template\nPosition: [ROLE]\nSalary: [AMOUNT]\nStart Date: [DATE]\nReports to: [MANAGER]"
-- `performance stuff 2025.txt` → content: "Mid-year performance review cycle\nReview window: June 15 - July 1\nManagers: complete self-assessments first\nHR contact: people@hqo.co"
+- `New hire stuff.txt` → "Onboarding checklist for Jamie Rodriguez\nStart date: March 3\nRole: Senior AE, West Coast\nEquipment: MacBook Pro, requested standing desk"
+- `offer_letter_template_v2_updated.txt` → "Employment Offer Letter Template\nPosition: [ROLE]\nSalary: [AMOUNT]\nStart Date: [DATE]\nReports to: [MANAGER]"
+- `performance stuff 2025.txt` → "Mid-year performance review cycle\nReview window: June 15 - July 1\nManagers: complete self-assessments first\nHR contact: people@hqo.co"
 
 **Messy research files:**
-- `research.txt` → content: "Competitor Analysis: Envoy vs HqO\nEnvoy: strong SMB presence, weaker enterprise\nHqO advantage: Leesman integration, CRE focus\nWin rate head-to-head: 67%"
-- `stuff from the internet.txt` → content: "CRE market trends 2026\nHybrid work stabilizing at 3.2 days/week average\nFlight to quality accelerating\nLEED certified buildings commanding 18% rent premium"
-- `draft_email_to_send_maybe.txt` → content: "Hi [Name],\nFollowing up on our conversation at CREtech last week.\nWould love to show you what HqO is doing with workplace analytics.\nAre you free for 20 minutes next week?"
+- `research.txt` → "Competitor Analysis: Envoy vs HqO\nEnvoy: strong SMB presence, weaker enterprise\nHqO advantage: Leesman integration, CRE focus\nWin rate head-to-head: 67%"
+- `stuff from the internet.txt` → "CRE market trends 2026\nHybrid work stabilizing at 3.2 days/week average\nFlight to quality accelerating\nLEED certified buildings commanding 18% rent premium"
+- `draft_email_to_send_maybe.txt` → "Hi [Name],\nFollowing up on our conversation at CREtech last week.\nWould love to show you what HqO is doing with workplace analytics.\nAre you free for 20 minutes next week?"
 
 **Misc clutter:**
-- `asdfgh.txt` → content: "password reminder: check 1password\nalso dentist appt April 3rd\npick up dry cleaning"
-- `Copy of Copy of presentation notes.txt` → content: "Slide 1: Opening — lead with the workplace data story\nSlide 5: Live demo of tenant app\nSlide 9: ROI case study (use Hines example)\nClosing: call to action — pilot offer"
-- `TODO.txt` → content: "- Send Q4 deck to board\n- Review Marcus's pipeline\n- Approve Jamie's offer letter\n- Schedule competitor deep-dive\n- Renew Salesforce contract (deadline: March 31)"
-- `random_backup_2024.txt` → content: "Old contract draft — Manulife\nInitial term: 3 years\nACV: $180,000\nStatus: SUPERSEDED — see Salesforce for current version"
-- `new doc.txt` → content: "Ideas for Q2 campaign\n- Workplace intelligence webinar series\n- CRETech sponsorship activation\n- Leesman benchmark report as lead gen"
-- `zz_archive_old_do_not_use.txt` → content: "ARCHIVED — 2024 pricing model\nDo not share externally\nReference only"
+- `asdfgh.txt` → "password reminder: check 1password\nalso dentist appt April 3rd\npick up dry cleaning"
+- `Copy of Copy of presentation notes.txt` → "Slide 1: Opening — lead with the workplace data story\nSlide 5: Live demo of tenant app\nSlide 9: ROI case study (use Hines example)\nClosing: call to action — pilot offer"
+- `TODO.txt` → "- Send Q4 deck to board\n- Review Marcus's pipeline\n- Approve Jamie's offer letter\n- Schedule competitor deep-dive\n- Renew Salesforce contract (deadline: March 31)"
+- `random_backup_2024.txt` → "Old contract draft — Manulife\nInitial term: 3 years\nACV: $180,000\nStatus: SUPERSEDED — see Salesforce for current version"
+- `new doc.txt` → "Ideas for Q2 campaign\n- Workplace intelligence webinar series\n- CRETech sponsorship activation\n- Leesman benchmark report as lead gen"
+- `zz_archive_old_do_not_use.txt` → "ARCHIVED — 2024 pricing model\nDo not share externally\nReference only"
 
-Use a single Bash heredoc block to create all 20 files efficiently.
+Launch as many parallel Write calls as possible to create files quickly so the user sees them appearing in Finder.
 
-After creating them, print:
+After creating all files, print:
 ```
 ✅ Mess created. 20 files dumped into one folder.
    Names like "ACTUAL_budget_final_FINAL.txt" and "asdfgh.txt" — classic.
 
-Step 2 of 3: Reading every file to understand what's actually in them...
+Reading every file to understand what's actually in them...
 ```
 
 ---
 
 ## Step 4: Read and Categorize
 
-Use the Read tool or Bash `cat` to read the contents of each file. Based on the content (not the filename), assign each file to one of these categories:
+Use the Read tool to read the contents of each file. Based on the content (not the filename), assign each file to one of these categories:
 
 | Category | Folder Name | What belongs here |
 |---|---|---|
@@ -128,9 +131,11 @@ Moving files now...
 
 ## Step 5: Organize the Files
 
-Use Bash to create the subdirectories and move files into them based on the categorization above.
+Create subdirectories and move files using the **Write tool** — read each file's content with the Read tool, then Write it to the new categorized path inside DEMO_DIR (e.g., `[DEMO_DIR]/📊 Finance/report_FINAL_v3_USE_THIS_ONE.txt`). Then delete the original flat files using Bash `rm`.
 
-After moving, run `find [DEMO_DIR] -type f | sort` to show the final structure.
+This ensures the organized files also appear on the real filesystem, not in a sandbox.
+
+After organizing, use Bash `ls -R [DEMO_DIR]` to show the final structure.
 
 Print:
 ```
@@ -158,15 +163,18 @@ That's the difference.
 Print:
 ```
 Want me to delete the demo folder when you're done? Just say "clean up file chaos"
-and I'll remove [DEMO_DIR] entirely.
+and I'll remove the demo folder entirely.
 ```
 
 ---
 
 ## Rules
 
-- Always create files with `echo` or heredoc via Bash — never manually write 20 separate Write tool calls
-- Categorization must be based on file *content*, not filename — say this explicitly in the output
-- Print the categorization table BEFORE moving files so the user sees the reasoning
-- Keep the tone light — this is a demo, have fun with the file names
-- If the demo folder already exists, wipe it first with `rm -rf [DEMO_DIR]` before recreating
+- **NEVER use Bash to create or move files** — Bash is sandboxed and writes to a temp directory. The user will NOT see those files. ALWAYS use the Write tool so files go to the real filesystem.
+- The first Write call to the chosen directory will trigger the directory access permission prompt — this is intentional and required.
+- Always use **absolute paths** (e.g., `/Users/sal/Desktop/cowork-demo-files/`) — never use `~` in Write tool paths.
+- Use parallel Write tool calls where possible to create files fast so the user sees them popping into Finder.
+- Categorization must be based on file *content*, not filename — say this explicitly in the output.
+- Print the categorization table BEFORE moving files so the user sees the reasoning.
+- Keep the tone light — this is a demo, have fun with the file names.
+- If the demo folder already exists, remove its contents first before recreating.
