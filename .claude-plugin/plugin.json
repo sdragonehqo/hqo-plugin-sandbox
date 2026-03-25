@@ -1,0 +1,9 @@
+{
+  "name": "cowork-demo",
+  "description": "An interactive demo tour of Cowork's core capabilities — file organization, dashboards, agents, and scheduled tasks.",
+  "author": {
+    "name": "HqO"
+  },
+  "keywords": ["demo", "cowork", "onboarding", "tour", "interactive"],
+  "skills": "./skills/"
+}
