@@ -11,46 +11,34 @@ Creates a folder of realistically messy, badly-named files — the kind every co
 
 ---
 
-## Step 1: Ask Where to Create the Files
+## Step 1: Request Folder Access
 
-**MANDATORY — DO NOT SKIP THIS STEP. You MUST use AskUserQuestion before creating any files.**
+**MANDATORY — DO NOT SKIP THIS STEP. You MUST request folder access before creating any files.**
 
-Call the AskUserQuestion tool with this exact question before doing anything else:
+Call the `request_cowork_directory` MCP tool **without a path** so the native folder picker opens and the user can choose where to put the demo files. Do NOT use AskUserQuestion — let the OS folder picker handle it.
 
-- **question**: "Where should I create the demo files? Pick a spot you can see — open that folder and watch the files appear live."
-- **header**: "File location"
-- **options**:
-  - label: "Desktop (Recommended)", description: "~/Desktop/cowork-demo-files/ — easiest to watch files appear in real time"
-  - label: "Documents", description: "~/Documents/cowork-demo-files/"
-  - label: "Downloads", description: "~/Downloads/cowork-demo-files/"
+Print this before calling the tool:
+```
+Pick a folder — I'll create a "cowork-demo-files" subfolder inside it.
+Open the folder on your computer so you can watch the files appear live.
+```
 
-Wait for the user's answer. Map their choice to an **absolute path** (resolve `~` to the user's actual home directory, e.g. `/Users/username/Desktop/cowork-demo-files/`):
-- Desktop → `/Users/[username]/Desktop/cowork-demo-files/`
-- Documents → `/Users/[username]/Documents/cowork-demo-files/`
-- Downloads → `/Users/[username]/Downloads/cowork-demo-files/`
-- Other (custom) → resolve to absolute path
-
-Store the chosen absolute path as DEMO_DIR.
+Once the user selects a folder, the tool returns a `VM path` (e.g. `/sessions/.../mnt/some-folder`). Create a `cowork-demo-files/` subfolder inside that mounted path and store the full path as DEMO_DIR.
 
 ---
 
-## Step 2: Request Directory Access and Create First File
+## Step 2: Create First File
 
-**CRITICAL: You MUST use the Write tool (NOT Bash) to create files. The Bash tool is sandboxed and will write to a temp directory — the user will NOT see those files on their actual computer. The Write tool writes to the real filesystem and triggers the directory access permission prompt.**
+**CRITICAL: You MUST use the Write tool (NOT Bash) to create files. The Bash tool is sandboxed and will write to a temp directory — the user will NOT see those files on their actual computer. The Write tool writes to the real filesystem.**
 
-Use the Write tool to create the first file at the absolute path. This will trigger the "Claude would like to Cowork in ~/Desktop" permission prompt, which the user must approve:
+Use the Write tool to create the first file inside DEMO_DIR:
 
 Write file: `[DEMO_DIR]/report_FINAL_v3_USE_THIS_ONE.txt`
 Content: `Q4 2025 Revenue Summary\nTotal Revenue: $4.2M\nGrowth: 18% YoY\nKey driver: Enterprise segment up 34%`
 
-After the user approves access and the first file is created, print:
+After the first file is created, print:
 ```
-📁 Access granted. Creating the mess now — watch your folder.
-```
-
-Then open the folder in Finder so the user can watch:
-```bash
-open [DEMO_DIR]
+📁 Creating the mess now — watch your folder.
 ```
 
 ---
